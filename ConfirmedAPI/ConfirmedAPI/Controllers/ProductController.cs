@@ -86,11 +86,18 @@ namespace ConfirmedAPI.Controllers
         [HttpPost("{id}/unreserve")]
         public ActionResult<ReservationDTO> Unreserve(int id, ReservationDTO reservation)
         {
-            var reservetionToken = Guid.Parse(reservation.ReservationToken);
-            var res = repo.GetReservation(id, reservetionToken);
-            if (res == null) return NotFound("Reservation not found!");
-            repo.RemoveReservationForProduct(res);
-            return Ok();
+            try
+            {
+                var reservetionToken = Guid.Parse(reservation.ReservationToken);
+                var res = repo.GetReservation(id, reservetionToken);
+                if (res == null) return NotFound("Reservation not found!");
+                repo.RemoveReservationForProduct(res);
+                return Ok();
+            }
+            catch
+            {
+                return BadRequest();
+            }
         }
 
         [HttpPost("{id}/sold")]

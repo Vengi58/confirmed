@@ -29,8 +29,8 @@ namespace ConfirmedAPITests
             var p2 = context.Products.FirstOrDefault(p => p.Name.Equals("Samba"));
             var p3 = context.Products.FirstOrDefault(p => p.Name.Equals("Stan Smith"));
 
-            context.Stocks.Add(new Stock { InStock = 20, Reserved = 0, Sold = 0, Product = p1, ProductId = p1.ID });
-            context.Stocks.Add(new Stock { InStock = 30, Reserved = 1, Sold = 0, Product = p2, ProductId = p2.ID });
+            context.Stocks.Add(new Stock { InStock = 20, Reserved = 1, Sold = 0, Product = p1, ProductId = p1.ID });
+            context.Stocks.Add(new Stock { InStock = 30, Reserved = 0, Sold = 0, Product = p2, ProductId = p2.ID });
             context.SaveChanges();
 
             var s1 = context.Stocks.FirstOrDefault(s => s.ProductId == p1.ID);
