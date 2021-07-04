@@ -43,7 +43,7 @@ namespace ConfirmedAPI.Data
                     savedSuccesfully = false;
                 }
             }
-            return DBContext.Reservations.Local.First();
+            return DBContext.Reservations.Local.Last();
         }
 
         public Stock CreateStockForProduct(Product product)
@@ -52,7 +52,7 @@ namespace ConfirmedAPI.Data
 
             DBContext.Stocks.Add(new Stock { Product = product, ProductId = product.ID  });
             DBContext.SaveChanges();
-            return DBContext.Stocks.Local.First();
+            return DBContext.Stocks.Local.Last();
         }
 
         public Product GetProduct(int productId)
@@ -73,15 +73,23 @@ namespace ConfirmedAPI.Data
 
         public void RemoveReservationForProduct(Reservation reservation)
         {
-            RetryReservationUpdate(reservation, r => r+1, s => s-1);
+            RetryReservationUpdate(reservation, s => s + 1, r => r - 1, s => s);
         }
 
         public void SellReservedProduct(Reservation reservation)
         {
-            RetryReservationUpdate(reservation, r => r-1, s => s+1);
+            RetryReservationUpdate(reservation, s => s,  r => r - 1, s => s + 1);
         }
 
-        private void RetryReservationUpdate(Reservation reservation, Func<int,int> reservedFun, Func<int, int> soldFun)
+        public void UpdateStock(Stock stock)
+        {
+            if (stock == null) throw new ArgumentNullException(nameof(stock));
+
+            DBContext.Stocks.Update(stock);
+            DBContext.SaveChanges();
+        }
+
+        private void RetryReservationUpdate(Reservation reservation, Func<int, int> instockFun, Func<int,int> reservedFun, Func<int, int> soldFun)
         {
             if (reservation == null) throw new ArgumentNullException(nameof(reservation));
 
@@ -94,7 +102,8 @@ namespace ConfirmedAPI.Data
                 var stock = GetStockForProduct(product);
 
                 stock.Reserved = reservedFun(stock.Reserved);
-                stock.InStock = soldFun(stock.InStock);
+                stock.InStock = instockFun(stock.InStock);
+                stock.Sold = soldFun(stock.Sold);
 
                 DBContext.Reservations.Remove(reservation);
                 DBContext.Stocks.Update(stock);
@@ -110,14 +119,6 @@ namespace ConfirmedAPI.Data
                     savedSuccesfully = false;
                 }
             }
-        }
-
-        public void UpdateStock(Stock stock)
-        {
-            if (stock == null) throw new ArgumentNullException(nameof(stock));
-
-            DBContext.Stocks.Update(stock);
-            DBContext.SaveChanges();
         }
     }
 }
