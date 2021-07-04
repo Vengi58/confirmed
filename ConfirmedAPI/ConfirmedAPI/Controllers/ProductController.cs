@@ -36,7 +36,7 @@ namespace ConfirmedAPI.Controllers
                 repo.UpdateStock(stockOfProduct);
                 return Ok();
             }
-            catch (Exception e)
+            catch
             {
                 return BadRequest();
             }
@@ -57,7 +57,7 @@ namespace ConfirmedAPI.Controllers
 
                 return Ok(new StockLevelDTO { IN_STOCK = stock.InStock, RESERVED = stock.Reserved, SOLD = stock.Sold });
             }
-            catch (Exception e)
+            catch
             {
                 return BadRequest();
             }
@@ -73,17 +73,16 @@ namespace ConfirmedAPI.Controllers
 
                 return Ok(new ReservationDTO { ReservationToken = res.Id.ToString() });
             }
-            catch (ArgumentOutOfRangeException e)
+            catch (ArgumentOutOfRangeException)
             {
-                return BadRequest();
+                return BadRequest("Item out of stock!");
             }
-            catch (Exception e)
+            catch
             {
                 return BadRequest();
             }
         }
 
-        // POST api/<ProductController>
         [HttpPost("{id}/unreserve")]
         public ActionResult<ReservationDTO> Unreserve(int id, ReservationDTO reservation)
         {
@@ -94,7 +93,6 @@ namespace ConfirmedAPI.Controllers
             return Ok();
         }
 
-        // POST api/<ProductController>
         [HttpPost("{id}/sold")]
         public ActionResult<ReservationDTO> Sold(int id, ReservationDTO reservation)
         {
@@ -107,7 +105,7 @@ namespace ConfirmedAPI.Controllers
                 repo.SellReservedProduct(res);
                 return Ok();
             }
-            catch (Exception e)
+            catch
             {
                 return BadRequest();
             }

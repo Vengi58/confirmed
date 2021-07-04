@@ -73,18 +73,28 @@ namespace ConfirmedAPI.Data
 
         public void RemoveReservationForProduct(Reservation reservation)
         {
+            RetryReservationUpdate(reservation, r => r+1, s => s-1);
+        }
+
+        public void SellReservedProduct(Reservation reservation)
+        {
+            RetryReservationUpdate(reservation, r => r-1, s => s+1);
+        }
+
+        private void RetryReservationUpdate(Reservation reservation, Func<int,int> reservedFun, Func<int, int> soldFun)
+        {
             if (reservation == null) throw new ArgumentNullException(nameof(reservation));
 
             var product = GetProduct(reservation.ProductId);
 
             bool savedSuccesfully = false;
 
-            while (!savedSuccesfully)
+            while (!savedSuccesfully || DBContext.Reservations.FirstOrDefault(r => r.Id == reservation.Id) != null)
             {
                 var stock = GetStockForProduct(product);
 
-                stock.Reserved--;
-                stock.InStock++;
+                stock.Reserved = reservedFun(stock.Reserved);
+                stock.InStock = soldFun(stock.InStock);
 
                 DBContext.Reservations.Remove(reservation);
                 DBContext.Stocks.Update(stock);
@@ -108,37 +118,6 @@ namespace ConfirmedAPI.Data
 
             DBContext.Stocks.Update(stock);
             DBContext.SaveChanges();
-        }
-
-        public void SellReservedProduct(Reservation reservation)
-        {
-            if (reservation == null) throw new ArgumentNullException(nameof(reservation));
-
-            var product = GetProduct(reservation.ProductId);
-
-            bool savedSuccesfully = false;
-
-            while (!savedSuccesfully)
-            {
-                var stock = GetStockForProduct(product);
-
-                stock.Reserved--;
-                stock.Sold++;
-
-                DBContext.Stocks.Update(stock);
-                DBContext.Reservations.Remove(reservation);
-                try
-                {
-                    DBContext.SaveChanges();
-                    savedSuccesfully = true;
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    DBContext.Reservations.Add(reservation);
-                    DBContext.Entry(stock).Reload();
-                    savedSuccesfully = false;
-                }
-            }
         }
     }
 }
