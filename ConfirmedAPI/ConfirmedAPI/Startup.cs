@@ -1,11 +1,9 @@
 using ConfirmedAPI.Data;
-using ConfirmedAPI.DTO;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 
 namespace ConfirmedAPI
@@ -25,7 +23,7 @@ namespace ConfirmedAPI
 
             services.AddControllers();
             services.AddDbContext<ConfirmedDbContext>(opt =>
-                opt.UseNpgsql(Configuration.GetConnectionString("ConfirmedDbConnection")));
+                opt.UseNpgsql(Configuration.GetConnectionString("ConfirmedDbConnectionAws")));
             services.AddScoped<IConfirmedRepository, ConfirmedRepository>();
 
             services.AddSwaggerGen(c =>
