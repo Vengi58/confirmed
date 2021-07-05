@@ -161,6 +161,15 @@ It uses and AWS RDS Postgres database for data persistance.
 
 The Demo can be found here: http://confirmed-stock.us-east-1.elasticbeanstalk.com/swagger/index.html
 
+There are 2 Products in the database
+
+| ID | Name |
+| -- | -------- |
+| 1 | Superstar |
+| 2 | Samba |
+
+And a Stock entry for `Product.ID = 1` 
+
 ### Notes, considerations
 
 - The solution does not contain authentication or authorization. To improve security, auth layer or a separate could be added later.
