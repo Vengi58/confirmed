@@ -20,7 +20,8 @@ ASP.NET Core Web API for an Inventory management of a webshop. The webshop would
 ### Implementation Details
 
 ASP.Net Core (5.0) Web Application, implemented in C#, using Visual Studio 2019. For database connection and data management it uses Entity Framework Core and supports SQL or InMemory Postgres database. \
-The API exposes a Swagger UI for documentation and testing purposes.
+The API exposes a Swagger UI for documentation and testing purposes.\
+The application uses Dependency Injection to pass dependent implementations to the constructors. The data access layer uses the Repository pattern to separate the business logic from the core CRUD operations and from the model to DTO transformations.
 
 The Solution contains 2 projects
 
