@@ -5,15 +5,15 @@ ASP.NET Core Web API
 
 ## Context
 
-![context](resources/context.png)
+<img src="resources/context.png" width="400">
 
 ## Containers
 
-![container](resources/containers.png)
+<img src="resources/containers.png" width="400">
 
 ## Components
 
-![components](resources/components.png)
+<img src="resources/components.png" width="800">
 
 ## Code
 
