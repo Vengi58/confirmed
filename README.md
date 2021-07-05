@@ -120,6 +120,15 @@ As it is more than possible the 2 identical calls might happen for the same Stoc
 ```
 This ensures that whenever a row is updated while another call is dealing with the same row, the `xmin` value is automatically changed, and EntityFramework throws a `DbUpdateConcurrencyException` telling that concurrent write occured. This is handled with a simple retry loop within the `ConfirmedRepository` within the `RetryReservationUpdate` method.
 
+More about Entity Framework and Database concurrency handling:
+
+https://docs.microsoft.com/en-us/aspnet/mvc/overview/getting-started/getting-started-with-ef-using-mvc/handling-concurrency-with-the-entity-framework-in-an-asp-net-mvc-application
+
+PostgreSQL specific:
+
+https://www.npgsql.org/efcore/modeling/concurrency.html
+
+
 
 ##### DTO
 Data Transfer Objects carry data between the different layers.
