@@ -159,7 +159,7 @@ modelBuilder.Entity<Stock>()
 The Confirmed web API is deployed to an AWS ElasticBeanstalk environment using the AWS SDK Tools in VisualStudio.
 It uses and AWS RDS Postgres database for data persistance.
 
-The Demo can be found here: http://confirmed-stock.us-east-1.elasticbeanstalk.com/swagger/index.html
+The Demo can be found here: http://confirmed-stock-dev.eba-tsxckek3.us-east-1.elasticbeanstalk.com/swagger/index.html
 
 There are 2 Products in the database
 
