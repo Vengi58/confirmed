@@ -174,7 +174,6 @@ And a Stock entry for `Product.ID = 1`
 
 - The solution does not contain authentication or authorization. To improve security, auth layer or a separate could be added later.
 - The solution is a simple web API, hosted in AWS in the demo. The ElastikBeanstalk provides several options for scalability, monitoring, alerting which could be easily used to prepare the service for incrementing load.
-- Currently any size of images are allowed to upload, which could affect the perfomance, especially that the upload/download is synchronous. 
 - For simplicity, the web method's response is HTTP 400 BadRequest in every case when an Exception occurs, otherwise HTTP 200 Ok.
 - The Swagger UI is exposed also when not in development mode and it does not contain any AUTH.
 - The code does not contain any logging, but NLog could be used for detailed logging.
